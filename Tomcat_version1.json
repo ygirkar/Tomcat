@@ -2,16 +2,22 @@
     "AWSTemplateFormatVersion": "2010-09-09",
     "Description": "Launch an EC2 instance",
     "Parameters": {
-        "KeyName": {
-            "Description": "Key Pair Name",
-            "Type": "AWS::EC2::KeyPair::KeyName"
-            
-        },
         "InstanceType": {
             "Description": "Select one of these",
             "Type": "String",
             "Default": "t2.micro",
             "AllowedValues": ["t2.micro", "t2.small", "t2.medium"]
+        },
+	    "Region": {
+	"Description": "Select one of the region",
+	"Type": "String",
+	"Default":"Asia Pacific (Mumbai)",
+	 "AllowedValues": ["Asia Pacific (Mumbai)","US East (Ohio)","US East (N. Virginia)"]
+    },
+	    "KeyName": {
+            "Description": "Key Pair Name",
+            "Type": "AWS::EC2::KeyPair::KeyName"
+            
         }
     },
     "Resources": {
