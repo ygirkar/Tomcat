@@ -1,30 +1,38 @@
 {
     "AWSTemplateFormatVersion": "2010-09-09",
-    "Description": "Launch an EC2 instance",
+    "Description": "Launch Tomcat Apache server with a simple website by using the users key and in specific regions.",
     "Parameters": {
+    "Region": {
+	"Description": "Select the region as here there are only two region where I can create the template",
+	"Type": "String",
+	"Default":"Asia Pacific (Mumbai)",
+	 "AllowedValues": ["Asia Pacific (Mumbai)","US East (Ohio)"]
+
+    },
+        "KeyName": {
+            "Description": "Take the keypair from the user",      
+            "Type": "AWS::EC2::KeyPair::KeyName" 
+            
+        },
         "InstanceType": {
-            "Description": "Select one of these",
+            "Description": "Select the instance type whic you want to select or else the default is t2.micro instance",   
             "Type": "String",
             "Default": "t2.micro",
             "AllowedValues": ["t2.micro", "t2.small", "t2.medium"]
-        },
-	    "Region": {
-	"Description": "Select one of the region",
-	"Type": "String",
-	"Default":"Asia Pacific (Mumbai)",
-	 "AllowedValues": ["Asia Pacific (Mumbai)","US East (Ohio)","US East (N. Virginia)"]
-    },
-	    "KeyName": {
-            "Description": "Key Pair Name",
-            "Type": "AWS::EC2::KeyPair::KeyName"
-            
         }
-    },
+	},
+	"Mappings" : {
+	    "RegionMap" : {
+      "us-east-2" : {"64" : "ami-ea87a78f" },
+      "ap-south-1" : {"64" : "ami-d7abd1b8" }  
+    }
+  },
     "Resources": {
         "Server": {
-            "Type": "AWS::EC2::Instance",
+	"Description" : "here the instance will be created based on the key,region, and instance type and the given command in Userdata will be run and the service will be started",
+            "Type": "AWS::EC2::Instance",   
             "Properties": {
-                "ImageId": "ami-aa5ebdd2",
+               "ImageId" : { "Fn::FindInMap" : [ "RegionMap", { "Ref" : "AWS::Region" }, "64"]},
                 "InstanceType": {"Ref": "InstanceType"},
                 "KeyName": {"Ref": "KeyName"},
                 "UserData":
@@ -40,16 +48,14 @@
 					"sudo chmod a+rx /opt/apache-tomcat-7.0.56/conf/* \n",
 					"sudo echo 'export CATALINA_HOME=/opt/apache-tomcat-7.0.56' > /etc/profile.d/tomcat.sh \n",
 					"source /etc/profile.d/tomcat.sh \n",
-				
-					
 					"echo -e '<?xmlversion='1.0'encoding='utf-8'?><tomcat-user><role rolename=\"manager-gui\"/><role rolename=\"manager-jmx\"/><role rolename=\"manager-script\"/><role rolename=\"manager-status\"/><role rolename=\"manager\"/><user username=\"tomcat\" password=\"s3cret\" roles=\"manager-gui,manager,manager-jmx,manager-script,manager-status\"/></tomcat-user>' > apache-tomcat-7.0.56/conf/tomcat-users.xml \n",
-					
 					"sudo $CATALINA_HOME/bin/startup.sh \n"
+					
                 ]]}
                 }
             }
         }
-    },
+	},
     "Outputs": {
     }
 }
