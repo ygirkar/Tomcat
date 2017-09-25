@@ -41,7 +41,7 @@
 					"sudo echo 'export CATALINA_HOME=/opt/apache-tomcat-7.0.56' > /etc/profile.d/tomcat.sh \n",
 					"source /etc/profile.d/tomcat.sh \n",
 					"echo -e '<?xmlversion='1.0'encoding='utf-8'?><tomcat-user><role rolename=\"manager-gui\"/><role rolename=\"manager-jmx\"/><role rolename=\"manager-script\"/><role rolename=\"manager-status\"/><role rolename=\"manager\"/><user username=\"tomcat\" password=\"s3cret\" roles=\"manager-gui,manager,manager-jmx,manager-script,manager-status\"/></tomcat-user>' > apache-tomcat-7.0.56/conf/tomcat-users.xml \n",
-					"sudo $CATALINA_HOME/bin/startup.sh \n"
+					"sudo $CATALINA_HOME/bin/startup.sh \n",
 					"sudo wget https://tomcat.apache.org/tomcat-6.0-doc/appdev/sample/sample.war -P /opt/apache-tomcat-7.0.56/webapps \n",
 					"sudo chmod 777 /opt/apache-tomcat-7.0.56/webapps/sample.war \n"
 				
